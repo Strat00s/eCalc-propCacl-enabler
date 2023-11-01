@@ -1,9 +1,20 @@
+function enableElement(element_ids) {
+    for (const elem_id of element_ids) {
+        console.log(elem_id);
+        select_element = document.getElementById(elem_id); //Get the select element by its ID
+        if(select_element.disabled)
+            select_element.removeAttribute('disabled');
+    }
+}
+
+
 console.log("eCalc unlocker loaded");
 
+
 //unlock battery cells
-let selectElement = document.getElementById('inBCell'); //Get the select element by its ID
-for(let i = 0; i < selectElement.options.length; i++) {
-    let optionElement = selectElement.options[i];
+let select_element = document.getElementById('inBCell'); //Get the select element by its ID
+for(let i = 0; i < select_element.options.length; i++) {
+    let optionElement = select_element.options[i];
     
     //Check if the option is disabled and enable it and change its value
     if(optionElement.disabled) {
@@ -13,10 +24,11 @@ for(let i = 0; i < selectElement.options.length; i++) {
 }
 console.log("Batteries unlocked");
 
+
 //unlock escs
-selectElement = document.getElementById('inEType'); //Get the select element by its ID
-for(let i = 0; i < selectElement.options.length; i++) {
-    let optionElement = selectElement.options[i];
+select_element = document.getElementById('inEType'); //Get the select element by its ID
+for(let i = 0; i < select_element.options.length; i++) {
+    let optionElement = select_element.options[i];
     
     //Check if the option is disabled and enable it and change its value
     if(optionElement.disabled) {
@@ -27,21 +39,20 @@ for(let i = 0; i < selectElement.options.length; i++) {
 console.log("ESCs unlocked");
 
 
-//mutation register when motor brand is changed
-selectElement = document.getElementById('inMType');
+//mutatio register when motor brand is changed
+select_element = document.getElementById('inMType');
 const observer = new MutationObserver((mutations) => {
-    console.log("Manufacturer changed");
-
     //get manufacturer id
-    manuf_elem = document.getElementById('inMManufacturer');
-    const selectedIndex  = manuf_elem.selectedIndex;
-    const selectedOption = manuf_elem.options[selectedIndex];
-    const manuf_id  = selectedOption.value;
-    console.log(selectedOption.text);
+    let manuf_element = document.getElementById('inMManufacturer');
+    const manuf_selected_option = manuf_element.options[manuf_element.selectedIndex];
+    const manuf_id  = manuf_selected_option.value;
+    console.log("Manufacturer changed to " + manuf_selected_option.text);
+
+    let select_element = document.getElementById('inMType');
 
     //go through each new option and enable it and change its value
-    for(let i = 0; i < selectElement.options.length; i++) {
-        let optionElement = selectElement.options[i];
+    for(let i = 0; i < select_element.options.length; i++) {
+        let optionElement = select_element.options[i];
         
         //Check if the option is disabled and enable it and change its value
         if(optionElement.disabled) {
@@ -50,21 +61,19 @@ const observer = new MutationObserver((mutations) => {
         }
     }
 });
-// Options for the observer (which mutations to observe)
-const config = { attributes: false, childList: true, subtree: false };
-// Start observing the select element for configured mutations
-observer.observe(selectElement, config);
+const config = { attributes: false, childList: true, subtree: false };  //options for the observer (which mutations to observe)
+observer.observe(select_element, config);                               //start observing the select element for configured mutations
 console.log("Motor manufacturer mutator registered");
 
 //unlock motor search
-selectElement = document.getElementById('BtnSearch'); //Get the select element by its ID
-if(selectElement.disabled)
-    selectElement.removeAttribute('disabled');
+enableElement(['BtnSearch'])
 console.log("Motor search unlocked");
 
-
 //prop wizard unlock
-selectElement = document.getElementById('BtnPropKvWizard'); //Get the select element by its ID
-if(selectElement.disabled)
-    selectElement.removeAttribute('disabled');
+enableElement(['BtnPropKvWizard'])
 console.log("Prop kv wizard unlocked");
+
+
+//csv controls
+enableElement(['AddCSV', 'DownloadCSV', 'ClearCSV']);
+console.log("CSV controls unlocked");

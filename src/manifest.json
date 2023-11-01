@@ -8,7 +8,10 @@
     "content_scripts": [
         {
             "js": ["content.js"],
-            "matches": ["https://ecalc.ch/motorcalc.php"]
+            "matches": [
+                "https://ecalc.ch/motorcalc.php",
+                "https://www.ecalc.ch/motorcalc.php"
+            ]
         }
     ]
 }
